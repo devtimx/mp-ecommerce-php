@@ -5,12 +5,17 @@ ini_set('display_errors', '1');
 require __DIR__ .  '/vendor/autoload.php';
 
 // Agrega credenciales
-MercadoPago\SDK::initialize();
-MercadoPago\SDK::setAccessToken("APP_USR-1159009372558727-072921-8d0b9980c7494985a5abd19fbe921a3d-617633181");
-MercadoPago\SDK::setPlatformId("PLATFORM_ID");
-MercadoPago\SDK::setIntegratorId("dev_24c65fb163bf11ea96500242ac130004");
-MercadoPago\SDK::setCorporationId("CORPORATION_ID");
-$config = MercadoPago\SDK::config();
+MercadoPago\SDK::setAccessToken('APP_USR-1159009372558727-072921-8d0b9980c7494985a5abd19fbe921a3d-617633181');
+// SDK de Mercado Pago
+//require __DIR__ .  '/vendor/autoload.php';
+
+// Agrega credenciales
+//MercadoPago\SDK::initialize();
+//MercadoPago\SDK::setAccessToken("APP_USR-1159009372558727-072921-8d0b9980c7494985a5abd19fbe921a3d-617633181");
+//MercadoPago\SDK::setPlatformId("PLATFORM_ID");
+//MercadoPago\SDK::setIntegratorId("dev_24c65fb163bf11ea96500242ac130004");
+//MercadoPago\SDK::setCorporationId("CORPORATION_ID");
+//$config = MercadoPago\SDK::config();
 //var_dump($config);
 ?>
 <!DOCTYPE html>
@@ -463,8 +468,9 @@ $config = MercadoPago\SDK::config();
             border: 0;
         }
     </style>
-    <script src="https://sdk.mercadopago.com/js/v2" view="detail"></script>
-    
+    <script src="https://www.mercadopago.com/v2/security.js" view="detail"></script>
+    // SDK MercadoPago.js V2
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
 
 
@@ -605,7 +611,7 @@ $config = MercadoPago\SDK::config();
                                     $item->quantity         = $_POST['unit'];
                                     $item->currency_id = "MXN";
                                     $item->unit_price       = $_POST['price'];
-                                    $item->external_reference = "manuelmannuel@gmail.com";
+                                    //$item->external_reference = "manuelmannuel@gmail.com";
                                     $preference->items = array($item);
 
                                     # Building an back_urls
@@ -630,15 +636,17 @@ $config = MercadoPago\SDK::config();
 
                                     $preference->items = array($item);
 
-                                    //$preference->external_reference = "manuelmannuel@gmail.com";
-                                    $preference->statement_descriptor= "Tienda e-commerce";
+                                    $preference->external_reference = "manuelmannuel@gmail.com";
+                                    $preference->statement_descriptor = "Tienda e-commerce";
                                     $preference->notification_url = "https://mpago.devti.dev/webhook.php";
                                     $preference->save(); # Save the preference and send the HTTP Request to create
                                     //var_dump($preference);
+                                    //die();
                                     # Return the HTML code for button
                                     //echo "PaymentId: " . $preference->id . "\n";
+                                    //echo "<div id='cho-container'></div>";
                                     echo "<a href='$preference->init_point'>
-                                            <button type='button' class='mercadopago-button' formmethod='post'>Pagar la compra</button>
+                                           <button type='button' class='mercadopago-button' formmethod='post'>Pagar la compra</button>
                                         </a>";
                                     ?>
                                 </div>
@@ -678,5 +686,22 @@ $config = MercadoPago\SDK::config();
         </svg> </div>
     <div id="ac-gn-viewport-emitter"> </div>
 </body>
+<script>
+    // Agrega credenciales de SDK
+    const mp = new MercadoPago('PUBLIC_KEY', {
+        locale: 'es-MX'
+    });
+
+    // Inicializa el checkout
+    mp.checkout({
+        preference: {
+            id: 'YOUR_PREFERENCE_ID'
+        },
+        render: {
+            container: '.cho-container', // Indica el nombre de la clase donde se mostrará el botón de pago
+            label: 'Pagar', // Cambia el texto del botón de pago (opcional)
+        }
+    });
+</script>
 
 </html>
